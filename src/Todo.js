@@ -81,7 +81,6 @@ const TodoContainer = () => {
   const [resetForm, setResetForm] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
  
-
   //   This if the GET Method
   useEffect(() => {
     const res = axios.get('https://todos-academlo.herokuapp.com/api/todos');
@@ -89,6 +88,7 @@ const TodoContainer = () => {
       setQuery(response.data.todos);
     });
   }, []);
+
   // This is the POST method
   useEffect(() => {
     if (newTask) {
@@ -104,8 +104,8 @@ const TodoContainer = () => {
       });
     }
   }, [newTask]);
-  // This is the Delete Method
 
+  // This is the Delete Method
   useEffect(() => {
     if (idtoDelete) {
       const res = axios.delete(
@@ -118,12 +118,12 @@ const TodoContainer = () => {
         );
       });
     }
-
     return () => {
       setidToDelete(null);
     };
   }, [idtoDelete]);
 
+// this is the PUT method
   useEffect(() => {
     if (taskToUpdate) {
       const res = axios.put(
@@ -155,15 +155,11 @@ const TodoContainer = () => {
   };
 
   const changetoIscompleted = (valor,data) => {
-    console.log(JSON.parse(valor),data.isCompleted)
     if (JSON.parse(valor) !== data.isCompleted){
         let temp_data = data;
         temp_data.isCompleted = !temp_data.isCompleted;
-        console.log(temp_data.isCompleted)
         setTaskToUpdate(temp_data); 
     }
-   
-  
   };
 
   let ArrayTodoItems = [];
