@@ -53,13 +53,23 @@ const TodoItem = ({
 }) => {
   return (
     <li>
-      <input
-        type="radio"
-        value={isCompleted}
-        onChange={() => handleisCompleted(object)}
-      />
-      Task: {task} Student: {student} is completed : {isCompleted}
-      <button onClick={() => onDeleteTask(id)}>Delete</button>
+      <div>
+        <input
+          type="radio"
+          name ={`iscompleted${id}`}
+          value={true}
+          onChange={(e) => handleisCompleted(e.target.value,object)}
+        />
+        True
+        <input
+          type="radio"
+          name = {`iscompleted${id}`}
+          value={false}
+          onChange={(e) => handleisCompleted(e.target.value,object)}
+        />
+        False Task: {task} Student: {student} is completed : {isCompleted}
+        <button onClick={() => onDeleteTask(id)}>Delete</button>
+      </div>
     </li>
   );
 };
@@ -70,6 +80,7 @@ const TodoContainer = () => {
   const [newTask, setNewTask] = useState(null);
   const [resetForm, setResetForm] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
+ 
 
   //   This if the GET Method
   useEffect(() => {
@@ -143,10 +154,16 @@ const TodoContainer = () => {
     setidToDelete(id);
   };
 
-  const changetoIscompleted = (data) => {
-    let temp_task = data;
-    temp_task.isCompleted = !data.isCompleted;
-    setTaskToUpdate(temp_task);
+  const changetoIscompleted = (valor,data) => {
+    console.log(JSON.parse(valor),data.isCompleted)
+    if (JSON.parse(valor) !== data.isCompleted){
+        let temp_data = data;
+        temp_data.isCompleted = !temp_data.isCompleted;
+        console.log(temp_data.isCompleted)
+        setTaskToUpdate(temp_data); 
+    }
+   
+  
   };
 
   let ArrayTodoItems = [];
@@ -159,7 +176,7 @@ const TodoContainer = () => {
         id={value._id}
         value={value.isCompleted}
         object={value}
-        isCompleted={value.isCompleted ? 'True' : 'False'}
+        isCompleted={value.isCompleted  ? "True" : 'False'}
         handleisCompleted={changetoIscompleted}
         onDeleteTask={handleDeleteTask}
       />
