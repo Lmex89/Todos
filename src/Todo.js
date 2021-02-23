@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import axios from 'axios';
@@ -31,13 +32,30 @@ const CreatTask = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        <input name="task" ref={register} placeholder="Task" />
-      </label>
-      <label>
-        <input name="student" ref={register} placeholder="Student"></input>
-      </label>
-      <button>{buttonText}</button>
+      <h1>ToDo List</h1>
+      <div className="form-group col">
+        <div className="col">
+          <label>
+            <input
+              className="form-control"
+              name="task"
+              ref={register}
+              placeholder="Task"
+            />
+          </label>
+        </div>
+        <div className="col">
+          <label>
+            <input
+              className="form-control"
+              name="student"
+              ref={register}
+              placeholder="Student "
+            ></input>
+          </label>
+          <button className="btn btn-primary">{buttonText}</button>
+        </div>
+      </div>
     </form>
   );
 };
@@ -52,23 +70,27 @@ const TodoItem = ({
   object,
 }) => {
   return (
-    <li>
+    <li className="list-group-item list-group-item-action list-group-item-dark ">
       <div>
         <input
+          className="form-check form-check-inline"
           type="radio"
-          name ={`iscompleted${id}`}
+          name={`iscompleted${id}`}
           value={true}
-          onChange={(e) => handleisCompleted(e.target.value,object)}
+          onChange={(e) => handleisCompleted(e.target.value, object)}
         />
         True
         <input
+          className="form-check form-check-inline"
           type="radio"
-          name = {`iscompleted${id}`}
+          name={`iscompleted${id}`}
           value={false}
-          onChange={(e) => handleisCompleted(e.target.value,object)}
+          onChange={(e) => handleisCompleted(e.target.value, object)}
         />
-        False Task: {task} Student: {student} is completed : {isCompleted}
-        <button onClick={() => onDeleteTask(id)}>Delete</button>
+        False Task: {task} Student: {student} is completed : {isCompleted + ' '}
+        <button class="btn btn-primary mb-2" onClick={() => onDeleteTask(id)}>
+          Delete
+        </button>
       </div>
     </li>
   );
@@ -80,7 +102,7 @@ const TodoContainer = () => {
   const [newTask, setNewTask] = useState(null);
   const [resetForm, setResetForm] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
- 
+
   //   This if the GET Method
   useEffect(() => {
     const res = axios.get('https://todos-academlo.herokuapp.com/api/todos');
@@ -123,7 +145,7 @@ const TodoContainer = () => {
     };
   }, [idtoDelete]);
 
-// this is the PUT method
+  // this is the PUT method
   useEffect(() => {
     if (taskToUpdate) {
       const res = axios.put(
@@ -154,11 +176,11 @@ const TodoContainer = () => {
     setidToDelete(id);
   };
 
-  const changetoIscompleted = (valor,data) => {
-    if (JSON.parse(valor) !== data.isCompleted){
-        let temp_data = data;
-        temp_data.isCompleted = !temp_data.isCompleted;
-        setTaskToUpdate(temp_data); 
+  const changetoIscompleted = (valor, data) => {
+    if (JSON.parse(valor) !== data.isCompleted) {
+      let temp_data = data;
+      temp_data.isCompleted = !temp_data.isCompleted;
+      setTaskToUpdate(temp_data);
     }
   };
 
@@ -172,7 +194,7 @@ const TodoContainer = () => {
         id={value._id}
         value={value.isCompleted}
         object={value}
-        isCompleted={value.isCompleted  ? "True" : 'False'}
+        isCompleted={value.isCompleted ? 'True' : 'False'}
         handleisCompleted={changetoIscompleted}
         onDeleteTask={handleDeleteTask}
       />
